@@ -1,0 +1,13 @@
+Phase:1
+- Create an SNS Topic and add emails
+- Create a Dummy IAM USER and create access_keys
+
+Phase:2
+- Create an IAM Execution Role for lambda 
+- Add the Policy
+- Create a Lambda Function
+- configure EventBrdige rules
+- Test it
+
+Phase:3
+- Should automatically delete my keys add TRIGGERS
