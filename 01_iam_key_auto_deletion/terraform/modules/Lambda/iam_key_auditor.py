@@ -2,9 +2,12 @@
 #Not_for_production_use
 
 import boto3
+import logging
 import os#
 from datetime import datetime, timezone
 
+logger=logging.getLogger()
+logger.setLevel(logging.INFO)
 iam = boto3.client('iam')
 sns = boto3.client('sns')
 
@@ -22,6 +25,7 @@ def lambda_handler(event, context):
     for page in paginator.paginate():
         for user in page["Users"]:
             username = user["UserName"]
+            logger.info(f"Scanning user: {username}")
 
             key_paginator = iam.get_paginator("list_access_keys")
             for key_page in key_paginator.paginate(UserName=username):
@@ -32,9 +36,12 @@ def lambda_handler(event, context):
                     age_days = (
                         datetime.now(timezone.utc) - key["CreateDate"]
                     ).days
+                    logger.info(f"  Key: {key['AccessKeyId']} | "
+                    f"Status: {key['Status']} | Age: {age_days} days")
 
                     # >= allows MAX_AGE_DAYS=0 testing
                     if age_days >= MAX_AGE_DAYS:
+                        logger.warning(f"  ⚠️  DISABLING: {username} - {age_days} days old")
                         iam.update_access_key(
                             UserName=username,
                             AccessKeyId=key["AccessKeyId"],
