@@ -1,0 +1,35 @@
+# Documentation folder
+docs/
+
+# Terraform files
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform/
+.terraform.lock.hcl
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+LICENSE
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_St  ore?
+.   _*
+.Spotl  ight-V  100
+.Trashes
+ehthumbs.db
+Thumbs.db
+lessons/day15/vpc-peering-demo-east.pem
+
+
+*.pem               
