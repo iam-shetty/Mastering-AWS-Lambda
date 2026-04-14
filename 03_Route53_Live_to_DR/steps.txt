@@ -1,0 +1,62 @@
+Prereq: One domain name, Buy XYZ (Cheap)
+
+Primary-server= Mumbai
+DR-Server= North virginia
+Lambda= Neutral (Sydney)
+
+Phase:1 ( primary Region )
+- Configure Domain
+- Create VPC and Create SG (All traffic)
+- Create EC2 
+
+Phase:2 ( primary Region )
+- Create target Group
+- Create Load balancer
+
+Phase:3 ( DR  Region )
+repeat the same steps for DR region also
+- Create VPC and Create SG (All traffic)
+- Create EC2 
+- Create target Group
+- Create Load balancer
+
+Pahse:4
+- Add a A record and Associate your Primary Loadbalancer
+- Create Health checks as well.
+
+Phase:5
+- Create SNS (DR region)
+- Create Cloudwatch Alarms (DR region)
+
+CloudWatch → Alarms → Create
+Select metric:
+Namespace: Route53
+Metric: HealthCheckStatus
+Condition:
+Value < 1
+Notification:
+SNS topic: dr-failover-topic
+Alarm name: primary-region-down
+Create alarm
+
+phase:6
+- Create IAM role for lambda and add inline policy
+
+Phase:7
+- Create Lambd function in neutral region (sydney)
+- Create environment variables
+    HOSTED_ZONE_ID
+    RECORD_NAME
+    DR_LB_DNS
+    DR_LB_ZONE_ID
+
+- Increase the Timeout period and paste the code.
+
+Phase:8
+- Connect SNS → Lambda by copying ARN
+
+Phase:9
+
+- Test the primary server
+- Stop Ec2 instance from primary region and wait for 2min
+- Once primary is healthy , Manually point the route53 to the primary Loadbalancer DNS
