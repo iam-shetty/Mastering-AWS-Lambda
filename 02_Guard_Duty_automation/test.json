@@ -1,0 +1,10 @@
+{
+    "detail": {
+        "type": "CryptoCurrency:EC2/BitcoinTool.B",
+        "resource": {
+            "instanceDetails": {
+                "instanceId": "i-0c8b7c92e69dc0a12"
+            }
+        }
+    }
+}

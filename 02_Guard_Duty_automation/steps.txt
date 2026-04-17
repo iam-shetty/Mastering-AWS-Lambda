@@ -1,0 +1,14 @@
+Phase-1
+- Create GuardDuty
+- Create VPC and more. 
+- Create a SG ( dont add any inbound or outbound rules )
+- Create an ROLE (Use only AmazonSSMManagedInstanceCore, keep it minimal.)
+- Create an Ec2 instance and Attach the role ( Dont give the quarantine SG to the instance) 
+
+Phase-2
+- Create IAM ROle for lambda and apply the policy
+- Create Lambda Function and paste the code.(Replace with quarantine SG)
+- Create event bridge for detection (Add guardduty policy)
+- Add triggers to lambda
+
+- Generate finding on GuardDuty
