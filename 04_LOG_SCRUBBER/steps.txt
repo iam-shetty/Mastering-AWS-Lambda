@@ -1,0 +1,30 @@
+- Create S3 bucket (clean-api-audit-logs-saikiranpi) === Give the same name at Env-Var
+
+- IAM role for lambda, Attach below policies.
+    AWSLambdaBasicExecutionRole
+    AmazonS3FullAccess
+
+- Create Lambda function and add environmental variables "api-log-scrubber"
+    CLEAN_LOG_BUCKET        clean-api-audit-logs-saikiranpi
+
+- Paste the lambda function and deploy
+
+- Create a Sample Log Group (Simulated App) Since we don’t have an Live application app yet, SO we’ll simulate logs.
+
+- CloudWatch → Logs → Log groups → Create log group (/aws/lambda/demo-app)
+
+- Lets Allow CloudWatch to Invoke Lambda, Open Cloud Shell
+
+aws lambda add-permission \
+  --function-name api-log-scrubber \
+  --statement-id AllowCloudWatchLogs \
+  --action lambda:InvokeFunction \
+  --principal logs.amazonaws.com \
+  --source-arn arn:aws:logs:ap-south-1:496203436083:log-group:/aws/lambda/demo-app:*
+
+
+- Create a subscription filter on the above loggroup created
+
+- Put a dummy log event "User john.doe@email.com used card 4111 1111 1111 1111 and phone +91 9876543210"
+
+- Verify s3 if its scrapped or not
