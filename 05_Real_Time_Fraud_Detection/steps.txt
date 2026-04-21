@@ -1,0 +1,21 @@
+Phase:1
+
+- Create DynamoDb Table
+
+- Create Kinesis Stream
+
+- IAM role for lambda 
+    - Basiclambda role
+    - dynamodbfullaccess
+    - kinesisfullaccess
+
+- Create Lambda function assign role
+
+- Add environmental variables
+    - FRAUD_TABLE = fault-trans
+
+- Paste the lambda function and deploy 
+
+- Allow lambda triggers to kinesis
+
+- Pass events
