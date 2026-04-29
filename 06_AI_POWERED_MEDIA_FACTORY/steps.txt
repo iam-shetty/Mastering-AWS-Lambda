@@ -1,0 +1,43 @@
+Phase 1:
+- Create S3 Bucket (raw-media-uploads-saikiranpi)
+- Enable eventbridge from S3 properties. 
+
+
+Phase2: 
+- Create DynamoDB Table "MediaMetadata"
+- Partionkey: "VideoName"
+
+Phase3: 
+- Create SNS "media-processing-complete"
+- Subscribe to your email
+
+Phase4
+- IAM Role "media-factory-lambda-role"
+    AWSLambdaBasicExecutionRole
+    AmazonS3ReadOnlyAccess
+    AmazonRekognitionFullAccess
+    AmazonTranscribeFullAccess
+    AmazonDynamoDBFullAccess
+    AmazonSNSFullAccess
+    AmazonBedrockFullAccess
+
+Phase:5
+- Create 4 Lambda Fucntions. 
+
+- Add ENV_VAR for DynamoDB
+
+Phase:6 
+- Create Step Functions State Machine
+
+Phase:7
+Create eventbridge
+
+Phase:7
+EventBridge Rule (S3 → Step Functions)
+Exact Test Steps (follow in order)
+Upload good video to S3
+Go to Step unctions → Executions
+Wait till execution turns green
+Check DynamoDB → item exists
+Upload bad/low-quality video
+Repeat checks
