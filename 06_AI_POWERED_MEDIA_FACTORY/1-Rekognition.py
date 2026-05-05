@@ -1,4 +1,5 @@
 import boto3
+import time
 
 rekognition = boto3.client("rekognition")
 
