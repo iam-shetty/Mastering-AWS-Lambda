@@ -11,7 +11,7 @@ def lambda_handler(event, context):
             "Bucket": event["bucket"],
             "Labels": event.get("labels", []),
             "Summary": event["summary"],
-            "Status": event["status"]       # ✅ THIS WAS MISSING
+            "Status": event["status"]       # THIS WAS MISSING
         }
     )
 
