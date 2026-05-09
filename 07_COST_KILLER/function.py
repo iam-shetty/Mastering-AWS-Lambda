@@ -11,7 +11,7 @@ TOPIC_ARN = os.environ.get("SNS_TOPIC_ARN")
 
 def lambda_handler(event, context):
     table = ddb.Table(TABLE)
-
+# check for unattached EBS volumes
     volumes = ec2.describe_volumes(
         Filters=[{"Name": "status", "Values": ["available"]}]
     )["Volumes"]
@@ -33,4 +33,30 @@ def lambda_handler(event, context):
             Message=f"Unattached EBS volume found: {vid}"
         )
 
-    return {"zombies": len(volumes)}
+        # Check for unassociated Elastic IPs
+        addresses = ec2.describe_addresses(
+            Filters=[{"Name": "domain", "Values": ["vpc"]}]
+        )["Addresses"]
+        
+        for addr in addresses:
+            if "AssociationId" not in addr:
+                aid = addr["AllocationId"]
+
+            table.put_item(
+                Item={
+                    "vid": aid,
+                    "Type": "Elastic IP",
+                    "Status": "ZOMBIE"
+                }
+            )
+
+            sns.publish(
+                TopicArn=TOPIC_ARN,
+                Subject="Zombie resource detected",
+                Message=f"Unassociated Elastic IP found: {aid}"
+            )
+
+    return {
+        "ebs_zombies": len(volumes),
+        "eip_zombies": len(addresses)
+    }
